@@ -1,0 +1,94 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\author{Olaf Bernstein}
+\title{ReVision}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{Wishlist}
+
+
+\subsection{Keywords}
+\begin{tabular}{||c|l||}\hline
+	keyword 	& description	\\ \hline \hline
+ 
+  
+	use 	 	& You will be able to list specific variables you want to use and \\
+  				& the scope of the next code block gets reduced to this variables. \\
+  				& Should be able to return values, the return type will get deduced at compile time. \\
+&\begin{lstlisting} 
+a = use x, y {
+	...
+	// return from the use block
+  	return 3;
+};
+\end{lstlisting} \\
+
+
+	namespace & C++ Style namespace keyword. \\
+	\\\hline
+\end{tabular}
+
+
+\subsection{Type System}
+The type system will be strongly typed with something similar to the C++ keyword \textit{auto} and will use static type checking.
+
+
+\subsubsection{Primitive Types}
+\begin{tabular}{||c|c||}\hline
+	signed & usigned	\\ \hline \hline
+	--- 	 & char		\\
+	int8   & uint8		\\
+	int16  & uint16		\\
+	int32  & uint32		\\
+	int64  & uint64		\\
+	float  & ---		\\
+	double & ---		\\
+\hline
+\end{tabular}
+
+
+\subsubsection{Composite Types}
+\begin{tabular}{||c|l||}\hline
+	type 		& description					\\ \hline \hline
+	union 	& Like the C/C++ union type. 		\\
+	struct 	& Like the C struct.		   		\\
+	class 	& C++ class type with some changes:	\\
+			&  Private members variables are accessible but can't be changed. \\
+			&  Functions must be separated from the member variables. \\
+	\hline
+\end{tabular}
+  
+
+\subsubsection{Type Qualifier}
+These work for all types above:\\
+\begin{tabular}{||c|l||}\hline
+	qualifier & description							\\ \hline \hline
+	const 	& Like the C/C++ const type qualifier. 	\\
+	\hline
+\end{tabular}
+
+
+\subsubsection{Other}
+\begin{tabular}{||c|l||}\hline
+	keyword/operator 	& description				\\ \hline \hline
+	'*' type 			& Like the C/C++ pointer. 	\\
+	'\&' type 			& Like the C/C++ reference. \\
+	\hline
+\end{tabular}
+
+
+\subsection{Functions}
+Can be declared in the global namespace but also inside a function which will only be accessible in the local space. Forward declarations similar to C/C++ will be supported and operator overloading.
+
+
+\subsection{Operator}
+
+
+\end{document}
