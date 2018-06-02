@@ -1,9 +1,0 @@
-\contentsline {section}{\numberline {1}Wishlist}{1}
-\contentsline {subsection}{\numberline {1.1}Keywords}{1}
-\contentsline {subsection}{\numberline {1.2}Type System}{1}
-\contentsline {subsubsection}{\numberline {1.2.1}Primitive Types}{2}
-\contentsline {subsubsection}{\numberline {1.2.2}Composite Types}{2}
-\contentsline {subsubsection}{\numberline {1.2.3}Type Qualifier}{2}
-\contentsline {subsubsection}{\numberline {1.2.4}Other}{2}
-\contentsline {subsection}{\numberline {1.3}Functions}{2}
-\contentsline {subsection}{\numberline {1.4}Operator}{2}

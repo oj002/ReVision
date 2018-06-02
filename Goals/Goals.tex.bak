@@ -1,0 +1,135 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{listings}
+\author{Olaf Bernstein}
+\title{ReVision Goals}
+
+\begin{document}
+
+\maketitle
+The Goal of this project is the complete revision of my favourite concepts of programming languages. It will be primarily oriented around C++ concepts because its currently one of my favourite and most used programming languages.
+\tableofcontents
+
+
+
+
+\section{Wy Not C++?}
+So why not C++, well C++ might support a grate amount of features, heck you can even make thinks like an NES emulator at compile time, but has gotten pretty messy lately. For Example, there are still trying to keep the C backwards compatibility, but have extremely many new features. Some serve the same purpose of the C equivalent, but are only there to support the new C++ features.
+
+
+
+
+\section{Control Flow}
+
+
+\subsection{\textit{while}}
+1. If condition is true goto 3. \\
+2. Execute code block. \\
+3. goto 1. \\
+4. Continue execution. \\
+Syntax:
+\begin{lstlisting}
+while(condition)
+{
+	// Code gets executed while condition is true
+}
+\end{lstlisting}
+
+
+\subsection{\textit{goto}}
+
+
+\subsection{\textit{for}}
+
+
+\subsection{\textit{switch}}
+
+
+\subsection{\textit{if}}
+
+
+\subsection{\textit{do}}
+1. Execute code block. \\
+2. If condition is true goto 1. \\
+4. Continue execution. \\
+Syntax:
+\begin{lstlisting}
+do
+{
+	// Code gets executed while condition is true
+} while(condition);
+\end{lstlisting}
+
+\subsection{\textit{use}}
+
+
+\subsection{\textit{asm}}
+
+
+
+
+
+\section{Composite Types}
+
+
+\subsection{\textit{class}}
+
+
+\subsection{\textit{enum}}
+
+
+\subsection{\textit{uniom}}
+
+
+\subsection{\textit{string}}
+
+
+
+
+
+\section{Type Modifier}
+
+
+\subsection{\textit{const}}
+
+
+
+
+
+\section{Primitive Types}
+
+
+\subsection{Integer}
+
+
+\subsection{Floating Point}
+
+
+\subsection{Other}
+
+\subsubsection{\textit{char}}
+
+\subsubsection{\textit{auto}}
+
+
+
+
+
+\section{Other}
+
+
+\subsection{\textit{new}}
+
+
+\subsection{\textit{delete}}
+
+
+\subsection{\textit{namespace}}
+
+
+
+
+\end{document}
