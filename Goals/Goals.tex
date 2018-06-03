@@ -26,7 +26,7 @@ So why not C++, well C++ might support a grate amount of features, heck you can 
 
 
 \subsection{\textit{while}}
-1. If condition is true jmp 3. \\
+1. If condition is false jmp 4. \\
 2. Execute code block. \\
 3. jmp 1. \\
 4. Continue execution. \\
@@ -46,20 +46,20 @@ LABLE:
 // Some code ...
 jmp LABLE;
 \end{lstlisting}
-You can also insert a optional condition.
+With the \textit{jmpif} keyword can also insert a optional condition.
 \begin{lstlisting}
 LABLE:
 // Some code ...
-jmp if(condition) LABLE;
+jmpif(condition) LABLE;
 \end{lstlisting}
 
 
 \subsection{\textit{for}}
-1. Execute initialization code.
-2. If condition is false jmp 5.
-3. Execute code.
-4. Execute iterate code.
-5. Continue execution.
+1. Execute initialization code. \\
+2. If condition is false jmp 5. \\
+3. Execute code. \\
+4. Execute iterate code. \\
+5. Continue execution. \\
 \begin{lstlisting}
 for(initialization; condition; iterate)
 {
@@ -87,7 +87,7 @@ switch(variable)
 
 
 \subsection{\textit{if}}
-1. If the condition is true execute next code block.
+1. If the condition is true execute next code block. \\
 2. Optional else code block get executed if 1 is false. \\
 Is also possible to stack if statements using else if's.
 \begin{lstlisting}
