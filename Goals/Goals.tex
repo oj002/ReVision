@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -16,8 +16,8 @@ The Goal of this project is the complete revision of my favourite concepts of pr
 
 
 
-\section{Wy Not C++?}
-So why not C++, well C++ might support a grate amount of features, heck you can even make thinks like an NES emulator at compile time, but has gotten pretty messy lately. For Example, there are still trying to keep the C backwards compatibility, but have extremely many new features. Some serve the same purpose of the C equivalent, but are only there to support the new C++ features.
+\section{Why Not C++?}
+So why not C++, well C++ might support a grate amount of features, heck you can even make thinks like an NES emulator at compile time, but it has gotten pretty messy lately. For Example, there are still trying to keep the C backwards compatibility, but have extremely many new features. Some serve the same purpose of the C equivalent, but are only there to support the new C++ features.
 
 
 
@@ -26,64 +26,107 @@ So why not C++, well C++ might support a grate amount of features, heck you can 
 
 
 \subsection{\textit{while}}
-1. If condition is true goto 3. \\
+1. If condition is true jmp 3. \\
 2. Execute code block. \\
-3. goto 1. \\
+3. jmp 1. \\
 4. Continue execution. \\
 Syntax:
 \begin{lstlisting}
 while(condition)
 {
-	// ...
+	// Some code ...
 }
 \end{lstlisting}
 
 
-\subsection{\textit{goto}}
+\subsection{\textit{jmp}}
+Will jump to the Lable that's specified.
+\begin{lstlisting}
+LABLE:
+// Some code ...
+jmp LABLE;
+\end{lstlisting}
+You can also insert a optional condition.
+\begin{lstlisting}
+LABLE:
+// Some code ...
+jmp if(condition) LABLE;
+\end{lstlisting}
 
 
 \subsection{\textit{for}}
+1. Execute initialization code.
+2. If condition is false jmp 5.
+3. Execute code.
+4. Execute iterate code.
+5. Continue execution.
+\begin{lstlisting}
+for(initialization; condition; iterate)
+{
+	// Some code ...
+}
+\end{lstlisting}
 
 
 \subsection{\textit{switch}}
+Generates a jump table that jumps to the cases where the value is the same as the variable value.
+\begin{lstlisting}
+switch(variable)
+{
+	case value_1:
+	{
+		// Some code ...
+	}
+	case value_2, value_3:
+	// Some code ...
+
+	default:
+	// Some code ...
+}
+\end{lstlisting}
 
 
 \subsection{\textit{if}}
+1. If the condition is true execute next code block.
+2. Optional else code block get executed if 1 is false. \\
+Is also possible to stack if statements using else if's.
+\begin{lstlisting}
+if(condition_1)
+{
+	// Some code ...
+}
+else if(condition_2)
+{
+	// Some code ...
+}
+else
+{
+	// Some code ...
+}
+\end{lstlisting}
 
 
 \subsection{\textit{do}}
 1. Execute code block. \\
-2. If condition is true goto 1. \\
+2. If condition is true jmp 1. \\
 4. Continue execution. \\
 Syntax:
 \begin{lstlisting}
 do
 {
-	// ...
+	// Some code ...
 } while(condition);
 \end{lstlisting}
 
 
-\subsection{\textit{use}}
-The scope of the code block gets reduced to the variables in the capture list.
-\begin{lstlisting}
-use x, y // Capture list
-{
-	// ...
-};
-\end{lstlisting}
-Optional you can return a variable just like in a function.
-\begin{lstlisting}
-z = use x, y // Capture list
-{
-	// ...
-	return val;
-};
-\end{lstlisting}
-
-
 \subsection{\textit{asm}}
-
+The code block after the asm keyword will be executed as assembly code.
+\begin{lstlisting}
+asm
+{
+	mov eax, 2 ; ...
+};
+\end{lstlisting}
 
 
 
@@ -112,6 +155,21 @@ z = use x, y // Capture list
 \subsection{\textit{const}}
 
 
+\subsection{'\textit{[]}'}
+C Array
+
+
+\subsection{'\textit{[]!}'}
+Vector
+
+
+\subsection{'\textit{*}'}
+Pointer
+
+
+\subsection{'\textit{*!}'}
+Unique Pointer
+
 
 
 
@@ -119,26 +177,37 @@ z = use x, y // Capture list
 
 
 \subsection{Integer}
+\begin{tabular}{c|c|l}
+signed			& unsigned			 	& Description\\ \hline
+\textit{int8}	& \textit{uint8}		& 8-Bit integer value. \\
+\textit{int16}	& \textit{uint16}		& 16-Bit integer value. \\
+\textit{int32}	& \textit{uint32}		& 32-Bit integer value. \\
+\textit{int64}	& \textit{uint64}		& 64-Bit integer value. \\
+\end{tabular}
 
 
 \subsection{Floating Point}
 
-\subsubsection{\textit{float}}
+\begin{tabular}{c|l}
+Type			& Description \\ \hline
+\textit{float}	& IEEE-32 bit Floating Point. \\
+\textit{double}	& IEEE-64 bit Floating Point. \\
+\end{tabular}
 
-\subsubsection{\textit{double}}
 
 
 \subsection{Other}
 
-\subsubsection{\textit{char}}
 
-\subsubsection{\textit{auto}}
+\begin{tabular}{c|l}
+Type			& Description \\ \hline
+\textit{char}	& 8-Bit character holding type. \\
+\textit{auto}	& Deduces the type automatic. \\
+\end{tabular}
 
 
 
-
-
-\section{Other}
+\section{Operators}
 
 
 \subsection{\textit{new}}
@@ -147,9 +216,30 @@ z = use x, y // Capture list
 \subsection{\textit{delete}}
 
 
+
+
+\section{Scope}
+
+
 \subsection{\textit{namespace}}
 
 
+\subsection{\textit{use}}
+The scope of the code block gets reduced to the variables in the capture list.
+\begin{lstlisting}
+use x, y // Capture list
+{
+	// Some code ...
+};
+\end{lstlisting}
+Optional you can return a variable just like in a function.
+\begin{lstlisting}
+z = use x, y // Capture list
+{
+	// Some code ...
+	return val;
+};
+\end{lstlisting}
 
 
 \end{document}
