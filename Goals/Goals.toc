@@ -5,26 +5,31 @@
 \contentsline {subsection}{\numberline {2.3}\textit {for}}{3}
 \contentsline {subsection}{\numberline {2.4}\textit {switch}}{3}
 \contentsline {subsection}{\numberline {2.5}\textit {if}}{3}
-\contentsline {subsection}{\numberline {2.6}\textit {do}}{4}
+\contentsline {subsection}{\numberline {2.6}\textit {do}}{3}
 \contentsline {subsection}{\numberline {2.7}\textit {asm}}{4}
-\contentsline {section}{\numberline {3}Composite Types}{4}
-\contentsline {subsection}{\numberline {3.1}\textit {class}}{4}
-\contentsline {subsection}{\numberline {3.2}\textit {enum}}{4}
-\contentsline {subsection}{\numberline {3.3}\textit {uniom}}{4}
-\contentsline {subsection}{\numberline {3.4}\textit {string}}{4}
-\contentsline {section}{\numberline {4}Type Modifier}{4}
-\contentsline {subsection}{\numberline {4.1}\textit {const}}{4}
-\contentsline {subsection}{\numberline {4.2}'\textit {[]}'}{4}
-\contentsline {subsection}{\numberline {4.3}'\textit {[]!}'}{5}
-\contentsline {subsection}{\numberline {4.4}'\textit {*}'}{5}
-\contentsline {subsection}{\numberline {4.5}'\textit {*!}'}{5}
-\contentsline {section}{\numberline {5}Primitive Types}{5}
-\contentsline {subsection}{\numberline {5.1}Integer}{5}
-\contentsline {subsection}{\numberline {5.2}Floating Point}{5}
-\contentsline {subsection}{\numberline {5.3}Other}{5}
-\contentsline {section}{\numberline {6}Operators}{5}
-\contentsline {subsection}{\numberline {6.1}\textit {new}}{5}
-\contentsline {subsection}{\numberline {6.2}\textit {delete}}{5}
-\contentsline {section}{\numberline {7}Scope}{5}
-\contentsline {subsection}{\numberline {7.1}\textit {namespace}}{5}
-\contentsline {subsection}{\numberline {7.2}\textit {use}}{5}
+\contentsline {section}{\numberline {3}Type Modifier}{4}
+\contentsline {subsection}{\numberline {3.1}\textit {const}}{4}
+\contentsline {subsection}{\numberline {3.2}'\textit {[]}'}{4}
+\contentsline {subsection}{\numberline {3.3}'\textit {[]!}'}{5}
+\contentsline {subsection}{\numberline {3.4}'\textit {*}'}{5}
+\contentsline {subsection}{\numberline {3.5}'\textit {*!}'}{5}
+\contentsline {subsection}{\numberline {3.6}Map}{5}
+\contentsline {section}{\numberline {4}Primitive Types}{5}
+\contentsline {subsection}{\numberline {4.1}Integer}{5}
+\contentsline {subsection}{\numberline {4.2}Floating Point}{6}
+\contentsline {subsection}{\numberline {4.3}Character/String Types}{6}
+\contentsline {section}{\numberline {5}Abstract Types}{6}
+\contentsline {subsection}{\numberline {5.1}Composite Types}{6}
+\contentsline {subsubsection}{\numberline {5.1.1}\textit {class}}{6}
+\contentsline {subsubsection}{\numberline {5.1.2}\textit {struct}}{6}
+\contentsline {subsubsection}{\numberline {5.1.3}\textit {enum}}{6}
+\contentsline {subsubsection}{\numberline {5.1.4}\textit {union}}{6}
+\contentsline {subsection}{\numberline {5.2}String}{6}
+\contentsline {section}{\numberline {6}Operators}{6}
+\contentsline {subsection}{\numberline {6.1}\textit {new}}{6}
+\contentsline {subsection}{\numberline {6.2}\textit {delete}}{6}
+\contentsline {section}{\numberline {7}Scope}{6}
+\contentsline {subsection}{\numberline {7.1}\textit {namespace}}{6}
+\contentsline {subsection}{\numberline {7.2}\textit {use}}{6}
+\contentsline {section}{\numberline {8}Other}{7}
+\contentsline {subsection}{\numberline {8.1}\textit {auto}}{7}

@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -10,7 +10,7 @@
 \begin{document}
 
 \maketitle
-The Goal of this project is the complete revision of my favourite concepts of programming languages. It will be primarily oriented around C++ concepts because its currently one of my favourite and most used programming languages.
+The Goal of this project is the complete revision of my favourite concepts of programming languages. It will be primarily oriented around C++ concepts because its currently one of my favourite and most used programming languages. I'll also take some inspiration from other languages like GO.
 \tableofcontents
 
 
@@ -131,32 +131,48 @@ asm
 
 
 
-\section{Composite Types}
-
-
-\subsection{\textit{class}}
-
-
-\subsection{\textit{enum}}
-
-
-\subsection{\textit{uniom}}
-
-
-\subsection{\textit{string}}
-
-
-
-
-
 \section{Type Modifier}
 
 
 \subsection{\textit{const}}
+Can be used to make a type imitable.
+On pointers it makes the pointer unable to point to a different memory position.
+\begin{lstlisting}
+const float pi = 3.14;
+// float = 2;  Error this would be invalid syntax.
+
+int a = 10;
+int b = 21;
+const * int ptr = &a;
+// ptr = &b; Error this would be invalid syntax.
+\end{lstlisting}
 
 
 \subsection{'\textit{[]}'}
-C Array
+Indicates that the type is an array.
+There are many different syntax styles:
+\begin{lstlisting}
+[10]int array0; // creates an array of size 10 with the type of \textit{int)
+
+[10]int array1 = {
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+};
+[]int array2 = { // The size of an array can be automaticly deduced.
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+};
+// array1 and array2 have exactly the same value and size
+
+[256]int array3 = {
+	[4] = 2, // Will set the 4th index to the value 2
+	[2,6] = 4 // Will set the 4th index to the value 2
+};
+
+
+[2][2]int array2d0 = { // You can also create array of arrays
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+};
+
+\end{lstlisting}
 
 
 \subsection{'\textit{[]!}'}
@@ -178,11 +194,20 @@ Unique Pointer
 
 \subsection{Integer}
 \begin{tabular}{c|c|l}
-signed			& unsigned			 	& Description\\ \hline
-\textit{int8}	& \textit{uint8}		& 8-Bit integer value. \\
-\textit{int16}	& \textit{uint16}		& 16-Bit integer value. \\
-\textit{int32}	& \textit{uint32}		& 32-Bit integer value. \\
-\textit{int64}	& \textit{uint64}		& 64-Bit integer value. \\
+signed			& unsigned			 	& Description\\ \hline \hline
+\textit{byte}	& \textit{ubyte}		&  \\
+\textit{int8}	& \textit{uint8}		& 8-Bit integer value. \\ \hline
+
+\textit{short}	& \textit{ushort}		&  \\
+\textit{int16}	& \textit{uint16}		& 16-Bit integer value. \\ \hline
+
+\textit{int}	& \textit{uint}			&  \\
+\textit{int32}	& \textit{uint32}		& 32-Bit integer value. \\ \hline
+
+\textit{long}	& \textit{ulong}		&  \\
+\textit{int64}	& \textit{uint64}		& 64-Bit integer value if 64 bits are available otherwise 32 bits. \\
+				&						& Using this data type on an system which doesn't support 64 bits \\
+				&						& will also grant an compiler Warning. \\
 \end{tabular}
 
 
@@ -190,17 +215,46 @@ signed			& unsigned			 	& Description\\ \hline
 
 \begin{tabular}{c|l}
 Type			& Description \\ \hline
-\textit{float}	& IEEE-32 bit Floating Point \\
-\textit{double}	& IEEE-64 bit Floating Point \\
+\textit{float}	& IEEE-32 bit Floating Point. \\
+\textit{double}	& IEEE-64 bit Floating Point. \\
+\end{tabular}
+
+
+\subsection{Character/String Types}
+
+
+\begin{tabular}{c|l}
+Type			& Description\\ \hline
+\textit{utf8}	&  \\
+\textit{char}	& 8-Bit unicode character. \\
+
+\textit{utf16}	& 16-Bit unicode character. \\
+\textit{utf32}	& 32-Bit unicode character. \\
+\textit{wchar}	& Depending on implementation same as utf16 or utf32 type. \\
 \end{tabular}
 
 
 
-\subsection{Other}
 
-\subsubsection{\textit{char}}
+\section{Abstract Types}
 
-\subsubsection{\textit{auto}}
+
+\subsection{Composite Types}
+
+\subsubsection{\textit{class}}
+\subsubsection{\textit{struct}}
+\subsubsection{\textit{enum}}
+\subsubsection{\textit{union}}
+
+
+\subsection{String}
+\begin{tabular}{c|l}
+Type				& Description\\ \hline \hline
+\textit{u8string}	&  \\
+\textit{string}		& Uses \textit{char} for each character. \\ \hline
+
+\textit{wstring}	& Uses \textit{wchar} for each character. \\
+\end{tabular}
 
 
 
@@ -238,6 +292,16 @@ z = use x, y // Capture list
 	return val;
 };
 \end{lstlisting}
+
+
+
+
+\section{Other}
+
+
+\subsection{\textit{auto}}
+
+
 
 
 \end{document}
