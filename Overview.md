@@ -1,7 +1,7 @@
 # Control Flow
 ## *asm*
 Inline assembly.
-```Java
+```CPP
 asm
 {
     // Assembly code
@@ -12,7 +12,7 @@ asm
 1. Execute code-block.
 2. If the *cond*ition is true jmp to 1.
 3. Coninue execution.
-```Java
+```CPP
 do
 {
 
@@ -21,7 +21,7 @@ do
 
 ## *switch*
 Generates a jump table and inserts break's.
-```Java
+```CPP
 switch(var)
 {
 case 1, 2, 3:
