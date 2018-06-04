@@ -10,7 +10,7 @@ asm
 
 ## *do*
 1. Execute code-block.
-2. If the *cond*ition is true jmp to 1.
+2. If the *condition* is true jmp to 1.
 3. Coninue execution.
 ```CPP
 do
@@ -35,8 +35,32 @@ default:
 ```
 
 ## *while*
+1. If the *condition* is false jmp to 4.
+2. Execute code-block.
+3. Jmp to 1.
+4. Coninue execution.
+```cpp
+while (cond)
+{
+    // Some code...
+}
+```
 
 ## *if*
+```cpp
+if (cond1)
+{
+    // Some code...
+}
+else if(cond2)
+{
+    // Some more code...
+}
+else
+{
+    // Some more code...
+}
+```
 
 ## *for*
 
