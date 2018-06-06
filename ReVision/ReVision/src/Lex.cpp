@@ -370,27 +370,6 @@ namespace ReVision
 			token.kind = (is_keyword_str(token.name) ? Token::KEYWORD : Token::NAME);
 			break;
 		}
-		case '/':
-		{
-			token.kind = Token::DIV; ++stream;
-			switch (*stream)
-			{
-			case '=': token.kind = Token::DIV_ASSIGN; ++stream; break;
-			case '/':
-			{
-				while (*stream != '\n')
-				{
-					++stream;
-				}
-				next_token();
-				break;
-			}
-			case '*':
-			{
-				break;
-			}
-			break;
-		}
 		case '<':
 		{
 			token.kind = Token::LT; ++stream;
@@ -423,6 +402,44 @@ namespace ReVision
 			{
 				token.kind = Token::GTEQ;
 				stream++;
+			}
+			break;
+		}
+		case '/':
+		{
+			token.kind = Token::DIV; ++stream;
+			if (*stream == '=')
+			{
+				token.kind = Token::DIV_ASSIGN; ++stream;
+			}
+			else if (*stream == '/') {
+				++stream;
+				while (*stream && *stream != '\n')
+				{
+					++stream;
+				}
+				goto repeat;
+			}
+			else if (*stream == '*')
+			{
+				++stream;
+				int level{ 1 };
+				while (*stream && level > 0)
+				{
+					if (stream[0] == '/' && stream[1] == '*')
+					{
+						++level; stream += 2;
+					}
+					else if (stream[0] == '*' && stream[1] == '/')
+					{
+						--level; stream += 2;
+					}
+					else
+					{
+						++stream;
+					}
+				}
+				goto repeat;
 			}
 			break;
 		}
@@ -565,6 +582,10 @@ namespace ReVision
 			"= += -= |= &= ^= <<= >>= *= /= %= ++ -- \n"
 
 			"// This is a single line comment \n"
+
+			"/* This is a multi line comment \n"
+			"/* This is a multi line comment*/ \n"
+			" This is a multi line comment*/ \n"
 
 			"asm do switch while if else for jmp jmpif break continue return case default \n"
 			"use namespace \n"
