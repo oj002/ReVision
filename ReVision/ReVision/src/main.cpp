@@ -1,5 +1,4 @@
 #include "Lex.hpp"
-#include "Ast.hpp"
 
 int main()
 {

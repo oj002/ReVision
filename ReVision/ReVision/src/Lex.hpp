@@ -55,7 +55,7 @@ namespace ReVision
 	static const char *complex32_keyword; // complex number with float32 real and imaginary parts.
 	static const char *complex64_keyword; // complex number with float64 real and imaginary parts.
 
-	static const char *char_keyword; // unicode character type
+	static const char *char_keyword; // Unicode character type
 
 	static const char *const_keyword;
 	static const char *auto_keyword;
@@ -84,6 +84,7 @@ namespace ReVision
 		enum Kind
 		{
 			END_OF_FILE,
+			COLON,
 			LPAREN,
 			RPAREN,
 			LBRACE, // '{'
@@ -107,7 +108,8 @@ namespace ReVision
 			AND,
 			LSHIFT,
 			RSHIFT,
-			LAST_MUL = RSHIFT,
+			NOT,
+			LAST_MUL = NOT,
 			// Additive precedence
 			ADD,
 			FIRST_ADD = ADD,

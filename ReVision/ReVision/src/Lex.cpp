@@ -55,13 +55,11 @@ namespace ReVision
 		KEYWORD(complex32); // complex number with float32 real and imaginary parts.
 		KEYWORD(complex64); // complex number with float64 real and imaginary parts.
 		KEYWORD(char); // alias for uint8 (utf-8 type)
-		KEYWORD(wchar); // alias for int32 (utf-32 type)
 		KEYWORD(const);
 		KEYWORD(auto);
 
 		// Abstract types
 		KEYWORD(string); // string with char as character type
-		KEYWORD(wstring); // string with wchar as character type
 
 		// Operators
 		KEYWORD(new);
@@ -84,6 +82,7 @@ namespace ReVision
 		switch (kind)
 		{
 		case Token::END_OF_FILE: return "EOF";
+		case Token::COLON: return ":";
 		case Token::LPAREN: return "(";
 		case Token::RPAREN: return ")";
 		case Token::LBRACE: return "{";
@@ -105,6 +104,7 @@ namespace ReVision
 		case Token::AND: return "&";
 		case Token::LSHIFT: return "<<";
 		case Token::RSHIFT: return ">>";
+		case Token::NOT: return "!";
 		case Token::ADD: return "+";
 		case Token::SUB: return "-";
 		case Token::OR: return "|";
@@ -414,12 +414,14 @@ namespace ReVision
 		CASE1(']', RBRACKET);
 		CASE1(',', COMMA);
 		CASE1('?', QUESTION);
+		CASE1(':', COLON);
 		CASE1(';', SEMICOLON);
 		CASE2('=', ASSIGN, '=', EQ);
 		CASE2('^', XOR, '=', XOR_ASSIGN);
 		CASE2('*', MUL, '=', MUL_ASSIGN);
 		CASE2('/', DIV, '=', DIV_ASSIGN);
 		CASE2('%', MOD, '=', MOD_ASSIGN);
+		CASE2('!', NOT, '=', NOTEQ);
 		CASE3('+', ADD, '=', ADD_ASSIGN, '+', INC);
 		CASE3('-', SUB, '=', SUB_ASSIGN, '-', DEC);
 		CASE3('&', AND, '=', AND_ASSIGN, '&', AND_AND);
@@ -534,14 +536,74 @@ namespace ReVision
 		assert_token_eof();
 
 		// Operator tests
-		init_stream("+ += ++ < <= << <<=");
-		assert_token(Token::ADD);
-		assert_token(Token::ADD_ASSIGN);
-		assert_token(Token::INC);
-		assert_token(Token::LT);
-		assert_token(Token::LTEQ);
+		init_stream(
+			": ( ) { } [ ] , . ? ;"
+			"123 0.02 \"test\" "
+			"name * / % & << >> "
+			"+ - ^ | "
+			"== != < > <= >= && || "
+			"= += -= |= &= ^= <<= >>= *= /= %= ++ -- "
+
+			"asm do switch while if else for jmp jmpif break continue return case default "
+			"use namespace "
+			"class enum struct union "
+			"bool int uint uintptr int8 int16 int32 int64 uint8 uint16 uint32 uint64 float32 float64 complex32 complex64 char const auto "
+			"string new delete sizeof");
+
+		assert_token(Token::COLON);
+		assert_token(Token::LPAREN);
+		assert_token(Token::RPAREN);
+		assert_token(Token::LBRACE);
+		assert_token(Token::RBRACE);
+		assert_token(Token::LBRACKET);
+		assert_token(Token::RBRACKET);
+		assert_token(Token::COMMA);
+		assert_token(Token::DOT);
+		assert_token(Token::QUESTION);
+		assert_token(Token::SEMICOLON);
+		assert_token(Token::INT);
+		assert_token(Token::FLOAT);
+		assert_token(Token::STR);
+		assert_token(Token::NAME);
+		// Multiplicative precedence
+		assert_token(Token::MUL);
+		assert_token(Token::DIV);
+		assert_token(Token::MOD);
+		assert_token(Token::AND);
 		assert_token(Token::LSHIFT);
+		assert_token(Token::RSHIFT);
+		// Additive precedence
+		assert_token(Token::ADD);
+		assert_token(Token::SUB);
+		assert_token(Token::XOR);
+		assert_token(Token::OR);
+		// Comparative precedence
+		assert_token(Token::EQ);
+		assert_token(Token::NOTEQ);
+		assert_token(Token::LT);
+		assert_token(Token::GT);
+		assert_token(Token::LTEQ);
+		assert_token(Token::GTEQ);
+		assert_token(Token::AND_AND);
+		assert_token(Token::OR_OR);
+		// Assignment operators
+		assert_token(Token::ASSIGN);
+		assert_token(Token::ADD_ASSIGN);
+		assert_token(Token::SUB_ASSIGN);
+		assert_token(Token::OR_ASSIGN);
+		assert_token(Token::AND_ASSIGN);
+		assert_token(Token::XOR_ASSIGN);
 		assert_token(Token::LSHIFT_ASSIGN);
+		assert_token(Token::RSHIFT_ASSIGN);
+		assert_token(Token::MUL_ASSIGN);
+		assert_token(Token::DIV_ASSIGN);
+		assert_token(Token::MOD_ASSIGN);
+		assert_token(Token::INC);
+		assert_token(Token::DEC);
+		for (size_t i = 0; i < 43; ++i)
+		{
+			assert_token(Token::KEYWORD);
+		}
 		assert_token_eof();
 
 		// Misc tests

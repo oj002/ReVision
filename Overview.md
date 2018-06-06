@@ -10,7 +10,7 @@ asm
 
 ## *do*
 1. Execute code-block.
-2. If the *condition* is true jmp to 1.
+2. If the condition is true jmp to 1.
 3. Coninue execution.
 ```CPP
 do
@@ -35,7 +35,7 @@ default:
 ```
 
 ## *while*
-1. If the *condition* is false jmp to 4.
+1. If the condition is false jmp to 4.
 2. Execute code-block.
 3. Jmp to 1.
 4. Coninue execution.
@@ -63,11 +63,33 @@ else
 ```
 
 ## *for*
+1. Execute init.
+2. If condition is false jmp 6.
+3. Execute code-block.
+4. Execute iteration.
+5. Jmp 2.
+6. Coninue execution.
+```cpp
+for(init; cond; iteration)
+{
+    // Some code...
+}
+```
 
 ## *jmp*
+```cpp
+LABLE:
+// Some code...
+jmp LABLE;
+```
 
 ## *jmpif*
-
+Only jumps if the condition is true.
+```cpp
+LABLE:
+// Some code...
+jmpif (cond) LABLE;
+```
 
 # Scope
 
