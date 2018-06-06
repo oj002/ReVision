@@ -370,6 +370,27 @@ namespace ReVision
 			token.kind = (is_keyword_str(token.name) ? Token::KEYWORD : Token::NAME);
 			break;
 		}
+		case '/':
+		{
+			token.kind = Token::DIV; ++stream;
+			switch (*stream)
+			{
+			case '=': token.kind = Token::DIV_ASSIGN; ++stream; break;
+			case '/':
+			{
+				while (*stream != '\n')
+				{
+					++stream;
+				}
+				next_token();
+				break;
+			}
+			case '*':
+			{
+				break;
+			}
+			break;
+		}
 		case '<':
 		{
 			token.kind = Token::LT; ++stream;
@@ -419,7 +440,6 @@ namespace ReVision
 		CASE2('=', ASSIGN, '=', EQ);
 		CASE2('^', XOR, '=', XOR_ASSIGN);
 		CASE2('*', MUL, '=', MUL_ASSIGN);
-		CASE2('/', DIV, '=', DIV_ASSIGN);
 		CASE2('%', MOD, '=', MOD_ASSIGN);
 		CASE2('!', NOT, '=', NOTEQ);
 		CASE3('+', ADD, '=', ADD_ASSIGN, '+', INC);
@@ -537,18 +557,20 @@ namespace ReVision
 
 		// Operator tests
 		init_stream(
-			": ( ) { } [ ] , . ? ;"
-			"123 0.02 \"test\" "
-			"name * / % & << >> "
+			": ( ) { } [ ] , . ? ; \n"
+			"123 0.02 \"test\" \n"
+			"name * / % & << >> \n"
 			"+ - ^ | "
-			"== != < > <= >= && || "
-			"= += -= |= &= ^= <<= >>= *= /= %= ++ -- "
+			"== != < > <= >= && || \n"
+			"= += -= |= &= ^= <<= >>= *= /= %= ++ -- \n"
 
-			"asm do switch while if else for jmp jmpif break continue return case default "
-			"use namespace "
-			"class enum struct union "
-			"bool int uint uintptr int8 int16 int32 int64 uint8 uint16 uint32 uint64 float32 float64 complex32 complex64 char const auto "
-			"string new delete sizeof");
+			"// This is a single line comment \n"
+
+			"asm do switch while if else for jmp jmpif break continue return case default \n"
+			"use namespace \n"
+			"class enum struct union \n"
+			"bool int uint uintptr int8 int16 int32 int64 uint8 uint16 uint32 uint64 float32 float64 complex32 complex64 char const auto \n"
+			"string new delete sizeof \n");
 
 		assert_token(Token::COLON);
 		assert_token(Token::LPAREN);
