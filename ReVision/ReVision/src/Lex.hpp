@@ -79,6 +79,12 @@ namespace ReVision
 
 	bool is_keyword_str(const char *str);
 
+	struct SrcPos
+	{
+		const char *name;
+		int line;
+	};
+
 	struct Token
 	{
 		enum Kind
@@ -156,6 +162,7 @@ namespace ReVision
 			CHAR
 		} mod;
 
+		SrcPos pos;
 		const char *start;
 		const char *end;
 
@@ -168,8 +175,10 @@ namespace ReVision
 		};
 	};
 
+	static SrcPos pos_builtin{ "<builtin>", 0 };
 	static Token token;
 	static const char *stream;
+	static const char *line_start;
 
 	template<typename T>
 	static inline Token::Kind token_cast(T kind)
@@ -180,6 +189,9 @@ namespace ReVision
 	const char *token_kind_name(Token::Kind kind);
 	const char *token_info();
 
+	void warning(SrcPos pos, const char *fmt, ...);
+	void error(SrcPos pos, const char *fmt, ...);
+
 	uint8_t char_to_digit(char c);
 	void scan_int();
 	void scan_float();
@@ -189,7 +201,7 @@ namespace ReVision
 
 	void next_token();
 
-	void init_stream(const char *str);
+	void init_stream(const char *name, const char *str);
 
 	bool is_token(Token::Kind kind);
 	bool is_token_name(const char *name);

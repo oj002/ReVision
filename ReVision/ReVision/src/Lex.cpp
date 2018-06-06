@@ -131,14 +131,46 @@ namespace ReVision
 		case Token::INC: return "++";
 		case Token::DEC: return "--";
 		}
-		assert(0);
-		return nullptr;
+		return "<unknown>";
 	};
 	const char *token_info()
 	{
 		if (token.kind == Token::NAME || token.kind == Token::KEYWORD) { return token.name; }
 		else { return token_kind_name(token.kind); }
 	}
+
+	void warning(SrcPos pos, const char *fmt, ...)
+	{
+		if (pos.name == NULL)
+		{
+			pos = pos_builtin;
+		}
+		va_list args;
+		va_start(args, fmt);
+		printf("%s(%d): warning: ", pos.name, pos.line);
+		vprintf(fmt, args);
+		printf("\n");
+		va_end(args);
+	}
+	void error(SrcPos pos, const char *fmt, ...)
+	{
+		if (pos.name == NULL)
+		{
+			pos = pos_builtin;
+		}
+		va_list args;
+		va_start(args, fmt);
+		printf("%s(%d): error: ", pos.name, pos.line);
+		vprintf(fmt, args);
+		printf("\n");
+		va_end(args);
+	}
+
+	#define fatal_error(...) (error(__VA_ARGS__), exit(1))
+	#define error_here(...) (error(token.pos, __VA_ARGS__))
+	#define warning_here(...) (error(token.pos, __VA_ARGS__))
+	#define fatal_error_here(...) (error_here(__VA_ARGS__), exit(1))
+
 	uint8_t char_to_digit(char c)
 	{
 		switch (c)
@@ -186,12 +218,12 @@ namespace ReVision
 			if (digit == 0 && *stream != '0') { break; }
 			if (digit >= base)
 			{
-				syntax_error("Digit '%c' out of range for base %" PRIu64, *stream, base);
+				error_here("Digit '%c' out of range for base %" PRIu64, *stream, base);
 				digit = 0;
 			}
 			if (val > (std::numeric_limits<uint64_t>::max() - digit) / base)
 			{
-				syntax_error("Integer literal overflow");
+				error_here("Integer literal overflow");
 				while (std::isdigit(*stream)) { ++stream; }
 				val = 0; break;
 			}
@@ -214,14 +246,14 @@ namespace ReVision
 			if (*stream == '+' || *stream == '-') { ++stream; }
 			if (!std::isdigit(*stream))
 			{
-				syntax_error("Expected digit after float literal exponent, found '%c'.", *stream);
+				error_here("Expected digit after float literal exponent, found '%c'.", *stream);
 			}
 			while (std::isdigit(*stream)) { ++stream; }
 		}
 		const double val{ std::strtod(start, nullptr) };
 		if (val == HUGE_VAL)
 		{
-			syntax_error("Float literal overflow");
+			error_here("Float literal overflow");
 		}
 		token.kind = Token::FLOAT;
 		token.float_val = val;
@@ -247,11 +279,11 @@ namespace ReVision
 		char val{ 0 };
 		if (*stream == '\'')
 		{
-			syntax_error("Char literal cannot be empty"); ++stream;
+			error_here("Char literal cannot be empty"); ++stream;
 		}
 		else if (*stream == '\n')
 		{
-			syntax_error("Char literal cannot contain newline");
+			error_here("Char literal cannot contain newline");
 		}
 		else if (*stream == '\\')
 		{
@@ -259,7 +291,7 @@ namespace ReVision
 			val = escape_to_char(*stream);
 			if (val == 0 && *stream != '0')
 			{
-				syntax_error("Invalid char literal escape '\\%c'", *stream);
+				error_here("Invalid char literal escape '\\%c'", *stream);
 			}
 			++stream;
 		}
@@ -267,7 +299,7 @@ namespace ReVision
 
 		if (*stream != '\'')
 		{
-			syntax_error("Expected closing char quote, got '%c'", *stream);
+			error_here("Expected closing char quote, got '%c'", *stream);
 		}
 		else { ++stream; }
 
@@ -284,7 +316,7 @@ namespace ReVision
 			char val{ *stream };
 			if (val == '\n')
 			{
-				syntax_error("String literal cannot contain newline"); break;
+				error_here("String literal cannot contain newline"); break;
 			}
 			else if (val == '\\')
 			{
@@ -292,13 +324,13 @@ namespace ReVision
 				val = escape_to_char(*stream);
 				if (val == 0 && *stream != '0')
 				{
-					syntax_error("Invalid string literal escape '\\%c'", *stream);
+					error_here("Invalid string literal escape '\\%c'", *stream);
 				}
 			}
 			str += val; ++stream;
 		}
 		if (*stream) { assert(*stream == '"'); ++stream; }
-		else { syntax_error("Unexpected end of file within string literal"); }
+		else { error_here("Unexpected end of file within string literal"); }
 		token.kind = Token::STR;
 		token.str_val = str_intern(str.c_str());
 	}
@@ -328,8 +360,15 @@ namespace ReVision
 		{
 		case ' ': case '\t': case '\n': case '\r': case '\v':
 		{
-			while (std::isspace(*stream)) { ++stream; }
-			goto repeat; break;
+			while (isspace(*stream))
+			{
+				if (*stream++ == '\n')
+				{
+					line_start = stream;
+					token.pos.line++;
+				}
+			}
+			goto repeat;
 		}
 		case '\'': { scan_char(); break; }
 		case '"': { scan_str(); break; }
@@ -477,9 +516,12 @@ namespace ReVision
 	#undef CASE2
 	#undef CASE3
 
-	void init_stream(const char *str)
+	void init_stream(const char *name, const char *str)
 	{
 		stream = str;
+		line_start = stream;
+		token.pos.name = name ? name : "<string>";
+		token.pos.line = 1;
 		next_token();
 	}
 
@@ -512,7 +554,7 @@ namespace ReVision
 		}
 		else
 		{
-			fatal("expected token %s, got %s", token_kind_name(token_cast(kind)), token_info());
+			fatal_error_here("expected token %s, got %s", token_kind_name(token_cast(kind)), token_info());
 			return false;
 		}
 	}
@@ -541,7 +583,7 @@ namespace ReVision
 		keyword_test();
 
 		// Integer literal tests
-		init_stream("0 18446744073709551615 0xffffffffffffffff 042 0b1111");
+		init_stream(nullptr, "0 18446744073709551615 0xffffffffffffffff 042 0b1111");
 		assert_token_int(0);
 		assert_token_int(18446744073709551615ull);
 		assert(token.mod == Token::Mod::HEX);
@@ -553,7 +595,7 @@ namespace ReVision
 		assert_token_eof();
 
 		// Float literal tests
-		init_stream("3.14 .123 42. 3e10");
+		init_stream(nullptr, "3.14 .123 42. 3e10");
 		assert_token_float(3.14);
 		assert_token_float(.123);
 		assert_token_float(42.);
@@ -561,19 +603,19 @@ namespace ReVision
 		assert_token_eof();
 
 		// Char literal tests
-		init_stream("'a' '\\n'");
+		init_stream(nullptr, "'a' '\\n'");
 		assert_token_int('a');
 		assert_token_int('\n');
 		assert_token_eof();
 
 		// String literal tests
-		init_stream("\"foo\" \"a\\nb\"");
+		init_stream(nullptr, "\"foo\" \"a\\nb\"");
 		assert_token_str("foo");
 		assert_token_str("a\nb");
 		assert_token_eof();
 
 		// Operator tests
-		init_stream(
+		init_stream(nullptr,
 			": ( ) { } [ ] , . ? ; \n"
 			"123 0.02 \"test\" \n"
 			"name * / % & << >> \n"
@@ -650,7 +692,7 @@ namespace ReVision
 		assert_token_eof();
 
 		// Misc tests
-		init_stream("XY+(XY)_HELLO1,234+994");
+		init_stream(nullptr, "XY+(XY)_HELLO1,234+994");
 		assert_token_name("XY");
 		assert_token(Token::ADD);
 		assert_token(Token::LPAREN);

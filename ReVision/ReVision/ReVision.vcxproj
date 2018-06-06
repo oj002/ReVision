@@ -137,7 +137,6 @@
     <None Include=".clang_tidy" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Ast.cpp" />
     <ClCompile Include="src\Common.cpp" />
     <ClCompile Include="src\Lex.cpp" />
     <ClCompile Include="src\main.cpp" />
