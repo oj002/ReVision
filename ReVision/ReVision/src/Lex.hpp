@@ -3,81 +3,54 @@
 
 namespace ReVision
 {
-	// Control Flow
-	static const char *asm_keyword; // inline assembly
-	static const char *do_keyword;
-	static const char *switch_keyword;
-	static const char *while_keyword;
-	static const char *if_keyword;
-	static const char *else_keyword;
-	static const char *for_keyword;
-	static const char *jmp_keyword; // goto
-	static const char *jmpif_keyword; // conditional goto
+	extern const char *typedef_keyword;
+	extern const char *enum_keyword;
+	extern const char *struct_keyword;
+	extern const char *union_keyword;
+	extern const char *auto_keyword;
+	extern const char *const_keyword;
+	extern const char *func_keyword;
+	extern const char *sizeof_keyword;
+	extern const char *alignof_keyword;
+	extern const char *typeof_keyword;
+	extern const char *offsetof_keyword;
+	extern const char *break_keyword;
+	extern const char *continue_keyword;
+	extern const char *return_keyword;
+	extern const char *if_keyword;
+	extern const char *else_keyword;
+	extern const char *while_keyword;
+	extern const char *do_keyword;
+	extern const char *for_keyword;
+	extern const char *switch_keyword;
+	extern const char *case_keyword;
+	extern const char *default_keyword;
+	extern const char *import_keyword;
+	extern const char *jmp_keyword; // goto
 
-	static const char *break_keyword;
-	static const char *continue_keyword;
-	static const char *return_keyword;
-	static const char *case_keyword;
-	static const char *default_keyword;
-
-
-	// Scope
-	static const char *use_keyword; // reduces scope to capture list
-	static const char *namespace_keyword;
-
-
-	// Composite Types
-	static const char *class_keyword; // No inheritance
-	static const char *enum_keyword;
-	static const char *struct_keyword;
-	static const char *union_keyword;
-
-
-	// Primitive Types
-	static const char *bool_keyword; // true or false
-	static const char *int_keyword; // either 32 or 64 bits
-	static const char *uint_keyword; // same as int
-	static const char *uintptr_keyword; // a unsigned int large enough to store all memory addresses and sizes
-
-	static const char *int8_keyword; // signed 8-bit integer (-128 to 127)
-	static const char *int16_keyword; // signed 16-bit integer (-32768 to 32767)
-	static const char *int32_keyword; // signed 32-bit integer (-2147483648 to 2147483647)
-	static const char *int64_keyword; // signed 64-bit integer (-9223372036854775808 to 9223372036854775807)
-
-	static const char *uint8_keyword; // unsigned 8-bit integer (0 to 255)
-	static const char *uint16_keyword; // unsigned 16-bit integer (0 to 65535)
-	static const char *uint32_keyword; // unsigned 32-bit integer (0 to 4294967295)
-	static const char *uint64_keyword; // unsigned 64-bit integer (0 to 18446744073709551615)
-
-	static const char *float32_keyword; // IEEE 32-bit floating-point number
-	static const char *float64_keyword; // IEEE 64-bit floating-point number
-
-	static const char *complex32_keyword; // complex number with float32 real and imaginary parts.
-	static const char *complex64_keyword; // complex number with float64 real and imaginary parts.
-
-	static const char *char_keyword; // Unicode character type
-
-	static const char *const_keyword;
-	static const char *auto_keyword;
+	// extern const char *asm_keyword; // inline assembly
+	// extern const char *jmpif_keyword; // conditional goto
+	// extern const char *use_keyword; // reduces scope to capture list
+	// extern const char *class_keyword; // No inheritance
+	// extern const char *namespace_keyword;
+	// extern const char *new_keyword;
+	// extern const char *delete_keyword;
 
 
-	// Abstract types
-	static const char *string_keyword; // string with char as character type
+	extern const char *first_keyword;
+	extern const char *last_keyword;
+	extern std::vector<const char *> keywords;
 
-
-	// Operators
-	static const char *new_keyword;
-	static const char *delete_keyword;
-	static const char *sizeof_keyword;
-
-
-	static const char *first_keyword;
-	static const char *last_keyword;
-	static std::vector<const char *> keywords;
+	extern const char *always_name;
+	extern const char *foreign_name;
+	extern const char *complete_name;
+	extern const char *assert_name;
+	extern const char *declare_note_name;
+	extern const char *static_assert_name;
 
 	void init_keywords();
 
-	bool is_keyword_str(const char *str);
+	bool is_keyword_name(const char *name);
 
 	struct SrcPos
 	{
@@ -99,6 +72,9 @@ namespace ReVision
 			RBRACKET, // ']'
 			COMMA,
 			DOT,
+			AT,
+			POUND,
+			ELLIPSIS,
 			QUESTION,
 			SEMICOLON,
 			KEYWORD,
@@ -106,26 +82,27 @@ namespace ReVision
 			FLOAT,
 			STR,
 			NAME,
+			NEG,
+			NOT,
 			// Multiplicative precedence
-			MUL,
-			FIRST_MUL = MUL,
+			FIRST_MUL,
+			MUL = FIRST_MUL,
 			DIV,
 			MOD,
 			AND,
 			LSHIFT,
 			RSHIFT,
-			NOT,
-			LAST_MUL = NOT,
+			LAST_MUL = RSHIFT,
 			// Additive precedence
-			ADD,
-			FIRST_ADD = ADD,
+			FIRST_ADD,
+			ADD = FIRST_ADD,
 			SUB,
 			XOR,
 			OR,
 			LAST_ADD = OR,
 			// Comparative precedence
-			EQ,
-			FIRST_CMP = EQ,
+			FIRST_CMP,
+			EQ = FIRST_CMP,
 			NOTEQ,
 			LT,
 			GT,
@@ -135,8 +112,8 @@ namespace ReVision
 			AND_AND,
 			OR_OR,
 			// Assignment operators
-			ASSIGN,
-			FIRST_ASSIGN = ASSIGN,
+			FIRST_ASSIGN,
+			ASSIGN = FIRST_ASSIGN,
 			ADD_ASSIGN,
 			SUB_ASSIGN,
 			OR_ASSIGN,
@@ -150,7 +127,7 @@ namespace ReVision
 			LAST_ASSIGN = MOD_ASSIGN,
 			INC,
 			DEC,
-			
+			NUM_TOKEN_KINDS,
 		} kind;
 
 		enum class Mod
@@ -175,10 +152,10 @@ namespace ReVision
 		};
 	};
 
-	static SrcPos pos_builtin{ "<builtin>", 0 };
-	static Token token;
-	static const char *stream;
-	static const char *line_start;
+	extern SrcPos pos_builtin;
+	extern Token token;
+	extern const char *stream;
+	extern const char *line_start;
 
 	template<typename T>
 	static inline Token::Kind token_cast(T kind)
@@ -209,7 +186,4 @@ namespace ReVision
 	bool match_keyword(const char *name);
 	bool match_token(Token::Kind kind);
 	bool expect_token(Token::Kind kind);
-
-	void keyword_test();
-	void lex_test();
 }

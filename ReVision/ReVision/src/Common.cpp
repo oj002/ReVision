@@ -94,6 +94,9 @@ namespace ReVision
 		}
 	}
 
+	Arena str_arena;
+	std::vector<InternStr> interns;
+
 	const char *str_intern_range(const char *start, const char *end)
 	{
 		uint64_t len{ static_cast<uint64_t>(end - start) };
@@ -113,25 +116,5 @@ namespace ReVision
 	const char *str_intern(const char *str)
 	{
 		return str_intern_range(str, str + std::strlen(str));
-	}
-
-	void str_intern_test()
-	{
-		char a[] = "hello";
-		assert(strcmp(a, str_intern(a)) == 0);
-		assert(str_intern(a) == str_intern(a));
-		assert(str_intern(str_intern(a)) == str_intern(a));
-		char b[] = "hello";
-		assert(a != b);
-		assert(str_intern(a) == str_intern(b));
-		char c[] = "hello!";
-		assert(str_intern(a) != str_intern(c));
-		char d[] = "hell";
-		assert(str_intern(a) != str_intern(d));
-	}
-
-	void common_test()
-	{
-		str_intern_test();
 	}
 }

@@ -2,6 +2,65 @@
 
 namespace ReVision
 {
+	const char *typedef_keyword;
+	const char *enum_keyword;
+	const char *struct_keyword;
+	const char *union_keyword;
+	const char *auto_keyword;
+	const char *const_keyword;
+	const char *func_keyword;
+	const char *sizeof_keyword;
+	const char *alignof_keyword;
+	const char *typeof_keyword;
+	const char *offsetof_keyword;
+	const char *break_keyword;
+	const char *continue_keyword;
+	const char *return_keyword;
+	const char *if_keyword;
+	const char *else_keyword;
+	const char *while_keyword;
+	const char *do_keyword;
+	const char *for_keyword;
+	const char *switch_keyword;
+	const char *case_keyword;
+	const char *default_keyword;
+	const char *import_keyword;
+	const char *jmp_keyword; // goto
+
+	// const char *asm_keyword; // inline assembly
+	// const char *jmpif_keyword; // conditional goto
+	// const char *use_keyword; // reduces scope to capture list
+	// const char *class_keyword; // No inheritance
+	// const char *namespace_keyword;
+	// const char *new_keyword;
+	// const char *delete_keyword;
+	
+	/*
+	const char *bool_keyword; // true or false
+	const char *int_keyword; // either 32 or 64 bits
+	const char *uint_keyword; // same as int
+	const char *uintptr_keyword; // a unsigned int large enough to store all memory addresses and sizes
+	const char *int8_keyword; // signed 8-bit integer (-128 to 127)
+	const char *int16_keyword; // signed 16-bit integer (-32768 to 32767)
+	const char *int32_keyword; // signed 32-bit integer (-2147483648 to 2147483647)
+	const char *int64_keyword; // signed 64-bit integer (-9223372036854775808 to 9223372036854775807)
+	const char *uint8_keyword; // unsigned 8-bit integer (0 to 255)
+	const char *uint16_keyword; // unsigned 16-bit integer (0 to 65535)
+	const char *uint32_keyword; // unsigned 32-bit integer (0 to 4294967295)
+	const char *uint64_keyword; // unsigned 64-bit integer (0 to 18446744073709551615)
+	const char *float32_keyword; // IEEE 32-bit floating-point number
+	const char *float64_keyword; // IEEE 64-bit floating-point number
+	const char *complex32_keyword; // complex number with float32 real and imaginary parts.
+	const char *complex64_keyword; // complex number with float64 real and imaginary parts.
+	const char *char_keyword; // Unicode character type
+	const char *const_keyword;
+	const char *auto_keyword;
+	const char *string_keyword; // string with char as character type
+	*/
+	const char *first_keyword;
+	const char *last_keyword;
+	std::vector<const char *> keywords;
+
 	#define KEYWORD(name) name##_keyword = str_intern(#name); keywords.push_back(name##_keyword)
 	void init_keywords()
 	{
@@ -11,125 +70,113 @@ namespace ReVision
 			return;
 		}
 		char *arena_end = str_arena.end;
-		// Control Flow
-		KEYWORD(asm); // inline assembly
-		KEYWORD(do);
-		KEYWORD(switch);
-		KEYWORD(while);
-		KEYWORD(if);
-		KEYWORD(else);
-		KEYWORD(for);
-		KEYWORD(jmp); // goto
-		KEYWORD(jmpif); // conditional goto
-		KEYWORD(break);
-		KEYWORD(continue);
-		KEYWORD(return);
-		KEYWORD(case);
-		KEYWORD(default);
-
-		// Scope
-		KEYWORD(use); // reduces scope to capture list
-		KEYWORD(namespace);
-
-		// Composite Types
-		KEYWORD(class); // No inheritance
+		KEYWORD(typedef);
 		KEYWORD(enum);
 		KEYWORD(struct);
 		KEYWORD(union);
-
-		// Primitive Types
-		KEYWORD(bool); // true or false
-		KEYWORD(int); // either 32 or 64 bits
-		KEYWORD(uint); // same as int
-		KEYWORD(uintptr); // a unsigned int large enough to store all memory addresses and sizes
-		KEYWORD(int8); // signed 8-bit integer (-128 to 127)
-		KEYWORD(int16); // signed 16-bit integer (-32768 to 32767)
-		KEYWORD(int32); // signed 32-bit integer (-2147483648 to 2147483647)
-		KEYWORD(int64); // signed 64-bit integer (-9223372036854775808 to 9223372036854775807)
-		KEYWORD(uint8); // unsigned 8-bit integer (0 to 255)
-		KEYWORD(uint16); // unsigned 16-bit integer (0 to 65535)
-		KEYWORD(uint32); // unsigned 32-bit integer (0 to 4294967295)
-		KEYWORD(uint64); // unsigned 64-bit integer (0 to 18446744073709551615)
-		KEYWORD(float32); // IEEE 32-bit floating-point number
-		KEYWORD(float64); // IEEE 64-bit floating-point number
-		KEYWORD(complex32); // complex number with float32 real and imaginary parts.
-		KEYWORD(complex64); // complex number with float64 real and imaginary parts.
-		KEYWORD(char); // alias for uint8 (utf-8 type)
-		KEYWORD(const);
 		KEYWORD(auto);
-
-		// Abstract types
-		KEYWORD(string); // string with char as character type
-
-		// Operators
-		KEYWORD(new);
-		KEYWORD(delete);
+		KEYWORD(const);
+		KEYWORD(func);
 		KEYWORD(sizeof);
+		KEYWORD(alignof);
+		KEYWORD(typeof);
+		KEYWORD(offsetof);
+		KEYWORD(break);
+		KEYWORD(continue);
+		KEYWORD(return);
+		KEYWORD(if);
+		KEYWORD(else);
+		KEYWORD(while);
+		KEYWORD(do);
+		KEYWORD(for);
+		KEYWORD(switch);
+		KEYWORD(case);
+		KEYWORD(default);
+		KEYWORD(import);
+		KEYWORD(jmp); // goto
+
+		// KEYWORD(asm); // inline assembly
+		// KEYWORD(jmpif); // conditional goto
+		// KEYWORD(use); // reduces scope to capture list
+		// KEYWORD(class); // No inheritance
+		// KEYWORD(namespace);
+		// KEYWORD(new);
+		// KEYWORD(delete);
+
 		assert(str_arena.end == arena_end);
-		first_keyword = asm_keyword;
-		last_keyword = sizeof_keyword;
+		first_keyword = typedef_keyword;
+		last_keyword = jmp_keyword;
 		inited = true;
 	}
 	#undef KEYWORD
 	
-	bool is_keyword_str(const char *str)
+	bool is_keyword_name(const char *name)
 	{
-		return first_keyword <= str && str <= last_keyword; // Will check if str is in the intern strings between the keywords
+		return first_keyword <= name && name <= last_keyword;
 	}
+
+	SrcPos pos_builtin{ "<builtin>", 0 };
+	Token token;
+	const char *stream;
+	const char *line_start;
 
 	const char *token_kind_name(Token::Kind kind)
 	{
 		switch (kind)
 		{
-		case Token::END_OF_FILE: return "EOF";
-		case Token::COLON: return ":";
-		case Token::LPAREN: return "(";
-		case Token::RPAREN: return ")";
-		case Token::LBRACE: return "{";
-		case Token::RBRACE: return "}";
-		case Token::LBRACKET: return "[";
-		case Token::RBRACKET: return "]";
-		case Token::COMMA: return ",";
-		case Token::DOT: return ".";
-		case Token::QUESTION: return "?";
-		case Token::SEMICOLON: return ";";
-		case Token::KEYWORD: return "keyword";
-		case Token::INT: return "int";
-		case Token::FLOAT: return "float";
-		case Token::STR: return "string";
-		case Token::NAME: return "name";
-		case Token::MUL: return "*";
-		case Token::DIV: return "/";
-		case Token::MOD: return "%";
-		case Token::AND: return "&";
-		case Token::LSHIFT: return "<<";
-		case Token::RSHIFT: return ">>";
-		case Token::NOT: return "!";
-		case Token::ADD: return "+";
-		case Token::SUB: return "-";
-		case Token::OR: return "|";
-		case Token::XOR: return "^";
-		case Token::EQ: return "==";
-		case Token::NOTEQ: return "!=";
-		case Token::LT: return "<";
-		case Token::GT: return ">";
-		case Token::LTEQ: return "<=";
-		case Token::GTEQ: return ">=";
-		case Token::AND_AND: return "&&";
-		case Token::OR_OR: return "||";
-		case Token::ASSIGN: return "=";
-		case Token::ADD_ASSIGN: return "+=";
-		case Token::SUB_ASSIGN: return "-=";
-		case Token::OR_ASSIGN: return "|=";
-		case Token::AND_ASSIGN: return "&=";
-		case Token::XOR_ASSIGN: return "^=";
-		case Token::MUL_ASSIGN: return "*=";
-		case Token::DIV_ASSIGN: return "/=";
-		case Token::MOD_ASSIGN: return "%=";
-		case Token::LSHIFT_ASSIGN: return "<<=";
-		case Token::RSHIFT_ASSIGN: return ">>=";
-		case Token::INC: return "++";
-		case Token::DEC: return "--";
+			case Token::END_OF_FILE: return "EOF";
+			case Token::COLON: return ":";
+			case Token::LPAREN: return "(";
+			case Token::RPAREN: return ")";
+			case Token::LBRACE: return "{";
+			case Token::RBRACE: return "}";
+			case Token::LBRACKET: return "[";
+			case Token::RBRACKET: return "]";
+			case Token::COMMA: return ",";
+			case Token::DOT: return ".";
+			case Token::AT: return "@";
+			case Token::POUND: return "#";
+			case Token::ELLIPSIS: return "...";
+			case Token::QUESTION: return "?";
+			case Token::SEMICOLON: return ";";
+			case Token::KEYWORD: return "keyword";
+			case Token::INT: return "int";
+			case Token::FLOAT: return "float";
+			case Token::STR: return "string";
+			case Token::NAME: return "name";
+			case Token::NEG: return "~";
+			case Token::NOT: return "!";
+			case Token::MUL: return "*";
+			case Token::DIV: return "/";
+			case Token::MOD: return "%";
+			case Token::AND: return "&";
+			case Token::LSHIFT: return "<<";
+			case Token::RSHIFT: return ">>";
+			case Token::ADD: return "+";
+			case Token::SUB: return "-";
+			case Token::OR: return "|";
+			case Token::XOR: return "^";
+			case Token::EQ: return "==";
+			case Token::NOTEQ: return "!=";
+			case Token::LT: return "<";
+			case Token::GT: return ">";
+			case Token::LTEQ: return "<=";
+			case Token::GTEQ: return ">=";
+			case Token::AND_AND: return "&&";
+			case Token::OR_OR: return "||";
+			case Token::ASSIGN: return "=";
+			case Token::ADD_ASSIGN: return "+=";
+			case Token::SUB_ASSIGN: return "-=";
+			case Token::OR_ASSIGN: return "|=";
+			case Token::AND_ASSIGN: return "&=";
+			case Token::XOR_ASSIGN: return "^=";
+			case Token::MUL_ASSIGN: return "*=";
+			case Token::DIV_ASSIGN: return "/=";
+			case Token::MOD_ASSIGN: return "%=";
+			case Token::LSHIFT_ASSIGN: return "<<=";
+			case Token::RSHIFT_ASSIGN: return ">>=";
+			case Token::INC: return "++";
+			case Token::DEC: return "--";
 		}
 		return "<unknown>";
 	};
@@ -373,17 +420,21 @@ namespace ReVision
 		case '\'': { scan_char(); break; }
 		case '"': { scan_str(); break; }
 		case '.':
-		{
-			if (std::isdigit(stream[1]))
+			if (isdigit(stream[1]))
 			{
 				scan_float();
 			}
+			else if (stream[1] == '.' && stream[2] == '.')
+			{
+				token.kind = Token::ELLIPSIS;
+				stream += 3;
+			}
 			else
 			{
-				token.kind = Token::DOT; ++stream;
+				token.kind = Token::DOT;
+				++stream;
 			}
 			break;
-		}
 		case '0':  case '1': case '2': case'3': case '4': case '5': case '6': case '7': case '8': case '9':
 		{
 			while (std::isdigit(*stream)) { stream++; }
@@ -406,7 +457,7 @@ namespace ReVision
 				++stream;
 			}
 			token.name = str_intern_range(token.start, stream);
-			token.kind = (is_keyword_str(token.name) ? Token::KEYWORD : Token::NAME);
+			token.kind = (is_keyword_name(token.name) ? Token::KEYWORD : Token::NAME);
 			break;
 		}
 		case '<':
@@ -482,26 +533,29 @@ namespace ReVision
 			}
 			break;
 		}
-		CASE1('\0', END_OF_FILE);
-		CASE1('(', LPAREN);
-		CASE1(')', RPAREN);
-		CASE1('{', LBRACE);
-		CASE1('}', RBRACE);
-		CASE1('[', LBRACKET);
-		CASE1(']', RBRACKET);
-		CASE1(',', COMMA);
-		CASE1('?', QUESTION);
-		CASE1(':', COLON);
-		CASE1(';', SEMICOLON);
-		CASE2('=', ASSIGN, '=', EQ);
-		CASE2('^', XOR, '=', XOR_ASSIGN);
-		CASE2('*', MUL, '=', MUL_ASSIGN);
-		CASE2('%', MOD, '=', MOD_ASSIGN);
-		CASE2('!', NOT, '=', NOTEQ);
-		CASE3('+', ADD, '=', ADD_ASSIGN, '+', INC);
-		CASE3('-', SUB, '=', SUB_ASSIGN, '-', DEC);
-		CASE3('&', AND, '=', AND_ASSIGN, '&', AND_AND);
-		CASE3('|', OR, '=', OR_ASSIGN, '|', OR_OR);
+		CASE1('\0', Token::END_OF_FILE)
+		CASE1('(', Token::LPAREN)
+		CASE1(')', Token::RPAREN)
+		CASE1('{', Token::LBRACE)
+		CASE1('}', Token::RBRACE)
+		CASE1('[', Token::LBRACKET)
+		CASE1(']', Token::RBRACKET)
+		CASE1(',', Token::COMMA)
+		CASE1('@', Token::AT)
+		CASE1('#', Token::POUND)
+		CASE1('?', Token::QUESTION)
+		CASE1(';', Token::SEMICOLON)
+		CASE1('~', Token::NEG)
+		CASE1(':', Token::COLON)
+		CASE2('!', Token::NOT, '=', Token::NOTEQ)
+		CASE2('=', Token::ASSIGN, '=', Token::EQ)
+		CASE2('^', Token::XOR, '=', Token::XOR_ASSIGN)
+		CASE2('*', Token::MUL, '=', Token::MUL_ASSIGN)
+		CASE2('%', Token::MOD, '=', Token::MOD_ASSIGN)
+		CASE3('+', Token::ADD, '=', Token::ADD_ASSIGN, '+', Token::INC)
+		CASE3('-', Token::SUB, '=', Token::SUB_ASSIGN, '-', Token::DEC)
+		CASE3('&', Token::AND, '=', Token::AND_ASSIGN, '&', Token::AND_AND)
+		CASE3('|', Token::OR, '=', Token::OR_ASSIGN, '|', Token::OR_OR)
 		default:
 		{
 			syntax_error("Invalid '%c' token, skipping", *stream);
@@ -558,158 +612,4 @@ namespace ReVision
 			return false;
 		}
 	}
-
-	void keyword_test()
-	{
-		init_keywords();
-		assert(is_keyword_str(first_keyword));
-		assert(is_keyword_str(last_keyword));
-		for (const char *str : keywords)
-		{
-			assert(is_keyword_str(str));
-		}
-		assert(!is_keyword_str(str_intern("foo")));
-	}
-
-	#define assert_token(x) assert(match_token(x))
-	#define assert_token_name(x) assert(token.name == str_intern(x) && match_token(Token::NAME))
-	#define assert_token_int(x) assert(token.int_val == (x) && match_token(Token::INT))
-	#define assert_token_float(x) assert(token.float_val == (x) && match_token(Token::FLOAT))
-	#define assert_token_str(x) assert(strcmp(token.str_val, (x)) == 0 && match_token(Token::STR))
-	#define assert_token_eof() assert(is_token(Token::END_OF_FILE))
-
-	void lex_test()
-	{
-		keyword_test();
-
-		// Integer literal tests
-		init_stream(nullptr, "0 18446744073709551615 0xffffffffffffffff 042 0b1111");
-		assert_token_int(0);
-		assert_token_int(18446744073709551615ull);
-		assert(token.mod == Token::Mod::HEX);
-		assert_token_int(0xffffffffffffffffull);
-		assert(token.mod == Token::Mod::OCT);
-		assert_token_int(042);
-		assert(token.mod == Token::Mod::BIN);
-		assert_token_int(0xF);
-		assert_token_eof();
-
-		// Float literal tests
-		init_stream(nullptr, "3.14 .123 42. 3e10");
-		assert_token_float(3.14);
-		assert_token_float(.123);
-		assert_token_float(42.);
-		assert_token_float(3e10);
-		assert_token_eof();
-
-		// Char literal tests
-		init_stream(nullptr, "'a' '\\n'");
-		assert_token_int('a');
-		assert_token_int('\n');
-		assert_token_eof();
-
-		// String literal tests
-		init_stream(nullptr, "\"foo\" \"a\\nb\"");
-		assert_token_str("foo");
-		assert_token_str("a\nb");
-		assert_token_eof();
-
-		// Operator tests
-		init_stream(nullptr,
-			": ( ) { } [ ] , . ? ; \n"
-			"123 0.02 \"test\" \n"
-			"name * / % & << >> \n"
-			"+ - ^ | "
-			"== != < > <= >= && || \n"
-			"= += -= |= &= ^= <<= >>= *= /= %= ++ -- \n"
-
-			"// This is a single line comment \n"
-
-			"/* This is a multi line comment \n"
-			"/* This is a multi line comment*/ \n"
-			" This is a multi line comment*/ \n"
-
-			"asm do switch while if else for jmp jmpif break continue return case default \n"
-			"use namespace \n"
-			"class enum struct union \n"
-			"bool int uint uintptr int8 int16 int32 int64 uint8 uint16 uint32 uint64 float32 float64 complex32 complex64 char const auto \n"
-			"string new delete sizeof \n");
-
-		assert_token(Token::COLON);
-		assert_token(Token::LPAREN);
-		assert_token(Token::RPAREN);
-		assert_token(Token::LBRACE);
-		assert_token(Token::RBRACE);
-		assert_token(Token::LBRACKET);
-		assert_token(Token::RBRACKET);
-		assert_token(Token::COMMA);
-		assert_token(Token::DOT);
-		assert_token(Token::QUESTION);
-		assert_token(Token::SEMICOLON);
-		assert_token(Token::INT);
-		assert_token(Token::FLOAT);
-		assert_token(Token::STR);
-		assert_token(Token::NAME);
-		// Multiplicative precedence
-		assert_token(Token::MUL);
-		assert_token(Token::DIV);
-		assert_token(Token::MOD);
-		assert_token(Token::AND);
-		assert_token(Token::LSHIFT);
-		assert_token(Token::RSHIFT);
-		// Additive precedence
-		assert_token(Token::ADD);
-		assert_token(Token::SUB);
-		assert_token(Token::XOR);
-		assert_token(Token::OR);
-		// Comparative precedence
-		assert_token(Token::EQ);
-		assert_token(Token::NOTEQ);
-		assert_token(Token::LT);
-		assert_token(Token::GT);
-		assert_token(Token::LTEQ);
-		assert_token(Token::GTEQ);
-		assert_token(Token::AND_AND);
-		assert_token(Token::OR_OR);
-		// Assignment operators
-		assert_token(Token::ASSIGN);
-		assert_token(Token::ADD_ASSIGN);
-		assert_token(Token::SUB_ASSIGN);
-		assert_token(Token::OR_ASSIGN);
-		assert_token(Token::AND_ASSIGN);
-		assert_token(Token::XOR_ASSIGN);
-		assert_token(Token::LSHIFT_ASSIGN);
-		assert_token(Token::RSHIFT_ASSIGN);
-		assert_token(Token::MUL_ASSIGN);
-		assert_token(Token::DIV_ASSIGN);
-		assert_token(Token::MOD_ASSIGN);
-		assert_token(Token::INC);
-		assert_token(Token::DEC);
-		for (size_t i = 0; i < 43; ++i)
-		{
-			assert_token(Token::KEYWORD);
-		}
-		assert_token_eof();
-
-		// Misc tests
-		init_stream(nullptr, "XY+(XY)_HELLO1,234+994");
-		assert_token_name("XY");
-		assert_token(Token::ADD);
-		assert_token(Token::LPAREN);
-		assert_token_name("XY");
-		assert_token(Token::RPAREN);
-		assert_token_name("_HELLO1");
-		assert_token(Token::COMMA);
-		assert_token_int(234);
-		assert_token(Token::ADD);
-		assert_token_int(994);
-		assert_token_eof();
-	}
-
-	#undef assert_token
-	#undef assert_token_name
-	#undef assert_token_int
-	#undef assert_token_float
-	#undef assert_token_str
-	#undef assert_token_eof
 }

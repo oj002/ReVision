@@ -51,12 +51,9 @@ namespace ReVision
 		const char *str;
 	};
 
-	static Arena str_arena;
-	static std::vector<InternStr> interns;
+	extern Arena str_arena;
+	extern std::vector<InternStr> interns;
 
 	const char *str_intern_range(const char *start, const char *end);
 	const char *str_intern(const char *str);
-
-	void str_intern_test();
-	void common_test();
 } // namespace Ion
