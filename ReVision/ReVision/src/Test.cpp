@@ -76,7 +76,7 @@ namespace ReVision
 			"name ~ ! * / % & << >> \n"
 			"+ - | ^ "
 			"== != < > <= >= && || \n"
-			"= += -= |= &= ^= *= /= %= <<= >>= ++ -- \n"
+			"= += -= |= &= ^= *= /= %= <<= >>= ++ -- := \n"
 
 			"// This is a single line comment \n"
 
@@ -84,7 +84,7 @@ namespace ReVision
 			"/* This is a multi line comment*/ \n"
 			" This is a multi line comment*/ \n"
 
-			"typedef enum struct union auto const func sizeof alignof typeof offsetof \n"
+			"typedef enum struct union const func sizeof alignof typeof offsetof \n"
 			"break continue return if else while do for switch case default import jmp\n");
 
 		assert_token(Token::COLON); // ":"
@@ -138,6 +138,7 @@ namespace ReVision
 		assert_token(Token::RSHIFT_ASSIGN); // ">>="
 		assert_token(Token::INC); // "++"
 		assert_token(Token::DEC); // "--"
+		assert_token(Token::COLON_ASSIGN); // ":="
 
 		for (const char *k : keywords)
 		{

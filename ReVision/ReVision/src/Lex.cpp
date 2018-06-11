@@ -6,7 +6,6 @@ namespace ReVision
 	const char *enum_keyword;
 	const char *struct_keyword;
 	const char *union_keyword;
-	const char *auto_keyword;
 	const char *const_keyword;
 	const char *func_keyword;
 	const char *sizeof_keyword;
@@ -54,7 +53,6 @@ namespace ReVision
 	const char *complex64_keyword; // complex number with float64 real and imaginary parts.
 	const char *char_keyword; // Unicode character type
 	const char *const_keyword;
-	const char *auto_keyword;
 	const char *string_keyword; // string with char as character type
 	*/
 	const char *first_keyword;
@@ -74,7 +72,6 @@ namespace ReVision
 		KEYWORD(enum);
 		KEYWORD(struct);
 		KEYWORD(union);
-		KEYWORD(auto);
 		KEYWORD(const);
 		KEYWORD(func);
 		KEYWORD(sizeof);
@@ -177,6 +174,7 @@ namespace ReVision
 			case Token::RSHIFT_ASSIGN: return ">>=";
 			case Token::INC: return "++";
 			case Token::DEC: return "--";
+			case Token::COLON_ASSIGN: return "--";
 		}
 		return "<unknown>";
 	};
@@ -546,7 +544,7 @@ namespace ReVision
 		CASE1('?', Token::QUESTION)
 		CASE1(';', Token::SEMICOLON)
 		CASE1('~', Token::NEG)
-		CASE1(':', Token::COLON)
+		CASE2(':', Token::COLON, '=', Token::COLON_ASSIGN)
 		CASE2('!', Token::NOT, '=', Token::NOTEQ)
 		CASE2('=', Token::ASSIGN, '=', Token::EQ)
 		CASE2('^', Token::XOR, '=', Token::XOR_ASSIGN)

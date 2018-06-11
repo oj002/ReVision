@@ -104,3 +104,42 @@ jmpif (cond) LABLE;
 
 
 # Operators
+
+
+# Example code
+## Mandelbrot
+```cpp
+int main()
+{
+    const int WIDTH = 20, HEIGHT = 20, MAX_ITERATIONS = 100;
+    const float64 centerX = 0.0, centerY = 0.0, zoomFactor = 2.0;
+
+    for(int x = 0; x < WIDTH; ++x)
+    {
+        string mandelStr;
+        for(int y = 0; y < HEIGHT; ++y)
+        {
+            complex64 c(x * zoomFactor + center, y * zoomFactor + center);
+            complex64 z(0.0, 0.0);
+
+            int iterCount = 0;
+            while (zxsqr + zysqr <= 4.0 && iterCount < MAX_ITERATIONS)
+            {
+                z = z.sqr() + c;
+
+                ++iterCount;
+            }
+
+            if (iterCount >= maxIter)
+            {
+                mandelStr += '@';
+            }
+            else
+            {
+                mandelStr += "#*+=-:. "[iterCount % 8];
+            }
+        }
+        printf("%s\n", mandelStr);
+    }
+}
+```

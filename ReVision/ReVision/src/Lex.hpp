@@ -7,7 +7,6 @@ namespace ReVision
 	extern const char *enum_keyword;
 	extern const char *struct_keyword;
 	extern const char *union_keyword;
-	extern const char *auto_keyword;
 	extern const char *const_keyword;
 	extern const char *func_keyword;
 	extern const char *sizeof_keyword;
@@ -127,6 +126,7 @@ namespace ReVision
 			LAST_ASSIGN = MOD_ASSIGN,
 			INC,
 			DEC,
+			COLON_ASSIGN,
 			NUM_TOKEN_KINDS,
 		} kind;
 
