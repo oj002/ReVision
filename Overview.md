@@ -143,3 +143,16 @@ int main()
     }
 }
 ```
+
+# ToDo
+Think about c style
+```c
+struct s
+{
+    int x = 33;
+    float32 y = 23;
+}
+
+s mys;
+mys = s{x = 1, y = 4};
+```
