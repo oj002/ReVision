@@ -35,13 +35,13 @@
     <ClInclude Include="src\Common.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Ast.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Lex.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Test.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ast.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
