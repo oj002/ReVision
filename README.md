@@ -77,6 +77,13 @@ Later compiling to llvm with custom optimizations.
     else:
         false_statement_block # space/newline dependent
     ```
+4. other:
+    ```cpp
+    cond ?
+        true_statement_block
+    |
+        false_statement_block // space/newline dependent
+    ```
 
 
 ### Entry Point
