@@ -40,6 +40,7 @@ Later compiling to llvm with custom optimizations.
 * Not quite sure jet:
     * Compile-time-contracts
     * interfaces/concepts checked at compile time
+    * different shift operators for signed and unsigned
 
 ### Runtime abstractions/checks, that are conditional compile-time.
 * optional runtime-contracts
@@ -64,7 +65,7 @@ Later compiling to llvm with custom optimizations.
 
 
 ### Statements/Code-blocks
-1. C: 
+1. C/C++: 
     ```c
     if(cond) { true_statement_block } else { false_statement_block } // space/newline independent
     if(cond) true_statement; else false_statement; // space/newline independent
