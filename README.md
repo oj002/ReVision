@@ -181,3 +181,45 @@ public: // the variables and functions of the class can be read and changed from
     // public
 };
 ```
+
+
+
+
+
+# Ideas
+```cpp
+class foo
+{
+    // C++ equivalent for this-> is a single .
+    // The this pointer is implicitly passed as the first argument
+    // It can be explicitly changed to
+    // e.g. a constant member function would be declared like this
+    void print(&const this, int count);
+    // you can also pass a copy of this
+    // The implicit this explicitly written
+    void bar(&this, int y)
+    {
+        .x = y;
+    }
+    int x;
+};
+```
+
+```cpp
+// constant functions are functions in which no variable can change state
+// this means that the function is also considered pure
+// TODO: think about "can a pure function be called from a const one"
+    // pros: faster code
+    // cons: non consistent
+// for now yeas
+void printNum(int n) // note all variables in printNum are implicitly const, maybe it will even warn you if you write the const keyword inside the function to insure better coding styles
+{
+    if(n < 0) {
+        putc('-');
+        n = -n;
+    }
+    if(n / 10)
+        printNum(n / 10);
+    putc(n % 10 + '0');
+}
+```
