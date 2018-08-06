@@ -3,13 +3,16 @@
 This project is licensed under the terms of the [MIT](LICENSE.md) license.
 
 
+## Implementation
+* In C (not yet in the repo)
+* llvm c api https://pauladamsmith.com/blog/2015/01/how-to-get-started-with-llvm-c-api.html
+
 
 ## Traits
 ### Paradigm's
 * Mostly Imperative
     >Very intuitive and productive way of writing code.
-* OOP without normal inheritance
-    >Similar to C++ but all private variables will be const &.
+* Go style structs o oop
 * functional programming (optional functional purity)
     >Ensure cleaner/saver code. Make the Programmer feel better about the code.
 * inline assembly
@@ -19,6 +22,7 @@ This project is licensed under the terms of the [MIT](LICENSE.md) license.
 ### Fast runtime.
 First compiling to c and taking advantage of the gcc's optimizer.
 Later compiling to llvm with custom optimizations.
+Directly target a processor and compile to a boatable application.
 
 
 ### Low-level support.
@@ -97,8 +101,9 @@ Number 3 will be used, with maybe a different syntax (maybe the instead of main 
 
 
 ### Function Declaration
-* Free functions
-* Function local to another function
+* pure and const functions
+
+#### Free functions
 
 1. C: ```return_type name ( arguments ) { code }```
 2. Java: ```public class A { public static return_type name ( arguments ) throws exception_list { code } }```
@@ -113,24 +118,8 @@ See Variable/Types Declaration for the choice of type.\
 
 We don't want multiple return values because a struct can be used, or maybe at a later day a anonymous struct. We'll go for the C-style number one.
 
-Special cases:
-```csharp
- void name (arguments)
- {
-     code
- }
- int name ()
- {
-     code
- }
- var name(arguments) // may be allowed
- {
-     code
- }
-```
-
-Nested functions:
-```csharp
+#### Nested functions
+```cpp
 int foo(int x, y)
 {
     // It should also be allowed to forward declare
@@ -141,6 +130,17 @@ int foo(int x, y)
 }
 ```
 
+#### Functional functions
+* pure functions
+* const functions
+
+Booth can be mixed, this means every const function is pure and const functions can only call pure functions.
+```cpp
+int foo(int x, y) const; // const not in the c++ context, but rather it marks all variables in the function as const, and warns you if you do it explicitly
+int foo(int x, y) pure; // functionally pure, so for the same input there always will be the same output
+````
+
+#### Not decidet
 Lambdas may use the C++-style (Still not decided):
 ```[ capture_list ] ( arguments ) { code }```
 
@@ -171,15 +171,8 @@ struct name
 {
     // only public
 };
-// can have functions and variables
-class name
-{    
-    // Default private
-private: // outside of the class nobody can access the functions and the variables can't be changed but read in an constant context
-    // private
-public: // the variables and functions of the class can be read and changed from outside the class
-    // public
-};
+void (name &n) foo(int x); // GO style methods
+name.foo(10);
 ```
 
 
@@ -188,38 +181,8 @@ public: // the variables and functions of the class can be read and changed from
 
 # Ideas
 ```cpp
-class foo
-{
-    // C++ equivalent for this-> is a single .
-    // The this pointer is implicitly passed as the first argument
-    // It can be explicitly changed to
-    // e.g. a constant member function would be declared like this
-    void print(&const this, int count);
-    // you can also pass a copy of this
-    // The implicit this explicitly written
-    void bar(&this, int y)
-    {
-        .x = y;
-    }
-    int x;
-};
-```
-
-```cpp
 // constant functions are functions in which no variable can change state
 // this means that the function is also considered pure
-// TODO: think about "can a pure function be called from a const one"
-    // pros: faster code
-    // cons: non consistent
-// for now yeas
-void printNum(int n) // note all variables in printNum are implicitly const, maybe it will even warn you if you write the const keyword inside the function to insure better coding styles
-{
-    if(n < 0) {
-        putc('-');
-        n = -n;
-    }
-    if(n / 10)
-        printNum(n / 10);
-    putc(n % 10 + '0');
-}
+// which also allows mixing pure with const functions
+// note all variables in printNum are implicitly const, maybe it will even warn you if you write the const keyword inside the function to insure better coding styles
 ```
